@@ -20,7 +20,7 @@ namespace CarDealership.Models
 
     }
 
-    public static List<Car> GetCars()
+    public static List<Car> GetAll()
     {
       return CarList;
     }
