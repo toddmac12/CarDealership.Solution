@@ -10,14 +10,13 @@ namespace CarDealership.Models
     public int Id { get; }
     private static List<Car> CarList = new List<Car> {};
 
- public Car(string carModel, int price, int miles)
+    public Car(string carModel, int price, int miles)
     {
       CarModel = carModel;
       Price = price;
       Miles = miles;
       CarList.Add(this);
       Id = CarList.Count;
-
     }
 
     public static List<Car> GetAll()
