@@ -1,17 +1,58 @@
 @using CarDealership.Models;
+@{
+  int total = Model?.Count ?? 0;
+}
 
-<h1>Car List</h1>
-<ul>
-@if (Model.Count == 0)
+<section class="hero">
+  <div class="hero-card">
+    <h1>Inventory</h1>
+    <p>Scan the latest listings, compare mileage, and jump straight into details.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="/cars/new">Add a new car</a>
+      <a class="button button-secondary" href="/">Back home</a>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <strong>@total</strong>
+      <span>Total listings</span>
+    </div>
+    <div class="stat">
+      <strong>Fast updates</strong>
+      <span>Edit or remove entries any time.</span>
+    </div>
+  </div>
+</section>
+
+<h2 class="section-title">Available cars</h2>
+@if (total == 0)
+{
+  <div class="empty-state">
+    <p>No cars available yet. Add a new listing to get started.</p>
+  </div>
+}
+else
+{
+  <section class="card-grid">
+  @foreach (Car car in Model)
   {
-  <p>No cars available.</p>
+    <article class="car-card">
+      <div>
+        <span class="badge">#@car.Id</span>
+        <h3>@car.CarModel</h3>
+      </div>
+      <div class="car-meta">
+        <span>$@car.Price</span>
+        <span>@car.Miles miles</span>
+      </div>
+      <div class="car-actions">
+        <a class="button button-secondary" href="/cars/@car.Id">View</a>
+        <a class="button button-secondary" href="/cars/@car.Id/edit">Edit</a>
+        <form action="/cars/@car.Id/delete" method="post">
+          <button class="button button-primary" type="submit">Delete</button>
+        </form>
+      </div>
+    </article>
   }
-@foreach (Car car in Model)
-  {
-      <li>@car.CarModel</li>
-      <li>@car.Price</li>
-      <li>@car.Miles</li>
-      
-  }
-</ul>
-<a href="/cars/new">Add a new car.</a>
+  </section>
+}

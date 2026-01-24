@@ -1,9 +1,28 @@
-<form action ="/cars" method="post">
-<label for="carModel" > Enter car model</label>
-<input id= "carModel" name="carModel" type="text">
-<label for="price" > Enter car price</label>
-<input id= "price" name="price" type="text">
-<label for="miles" > Enter car miles</label>
-<input id= "miles" name="miles" type="text">
-<button type="submit">Submit</button>
+<section class="hero">
+  <div class="hero-card">
+    <h1>Add a new car</h1>
+    <p>Share the highlights of the vehicle so buyers can compare options quickly.</p>
+  </div>
+</section>
+
+<form class="form-card" action="/cars" method="post">
+  <div class="form-grid">
+    <div class="form-field">
+      <label for="carModel">Car model</label>
+      <input id="carModel" name="carModel" type="text" required />
+      <div class="form-help">Example: 2019 Subaru Forester</div>
+    </div>
+    <div class="form-field">
+      <label for="price">Price</label>
+      <input id="price" name="price" type="number" min="0" step="1" required />
+    </div>
+    <div class="form-field">
+      <label for="miles">Miles</label>
+      <input id="miles" name="miles" type="number" min="0" step="1" required />
+    </div>
+  </div>
+  <div class="inline-actions">
+    <button class="button button-primary" type="submit">Create listing</button>
+    <a class="button button-secondary" href="/cars">Cancel</a>
+  </div>
 </form>

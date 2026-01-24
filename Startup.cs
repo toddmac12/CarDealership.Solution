@@ -26,6 +26,7 @@ namespace CarDealership
     public void Configure(IApplicationBuilder app)
     {
       app.UseDeveloperExceptionPage();
+      app.UseStaticFiles();
       app.UseRouting();
 
       app.UseEndpoints(routes =>
