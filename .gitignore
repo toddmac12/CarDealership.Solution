@@ -3,3 +3,9 @@ bin/
 */obj/
 */bin/
 .vscode
+
+**/App_Data/
+*.db
+*.db-wal
+*.db-shm
+TestResults/

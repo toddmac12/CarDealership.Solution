@@ -1,25 +1,21 @@
-@using CarDealership.Models;
-
-<section class="hero">
-  <div class="hero-card">
-    <h1>Edit listing</h1>
-    <p>Update the model name, price, or mileage to keep the listing current.</p>
-  </div>
-</section>
-
+@model CarForm
+<section class="hero"><div class="hero-card"><h1>Edit listing</h1><p>Enter the model, price in whole US dollars, and mileage.</p></div></section>
 <form class="form-card" action="/cars/@Model.Id" method="post">
+  @Html.AntiForgeryToken()
+  @Html.ValidationSummary(false, "", new { @class = "validation-errors", role = "alert" })
   <div class="form-grid">
     <div class="form-field">
-      <label for="carModel">Car model</label>
-      <input id="carModel" name="carModel" type="text" value="@Model.CarModel" required />
+      @Html.LabelFor(m => m.CarModel, "Car model")
+      @Html.TextBoxFor(m => m.CarModel, new { required = "required", maxlength = 120 })
+      <div class="form-help">Example: 2019 Subaru Forester</div>
     </div>
     <div class="form-field">
-      <label for="price">Price</label>
-      <input id="price" name="price" type="number" min="0" step="1" value="@Model.Price" required />
+      @Html.LabelFor(m => m.Price, "Price (USD)")
+      @Html.TextBoxFor(m => m.Price, new { type = "number", min = 0, max = int.MaxValue, step = 1, required = "required" })
     </div>
     <div class="form-field">
-      <label for="miles">Miles</label>
-      <input id="miles" name="miles" type="number" min="0" step="1" value="@Model.Miles" required />
+      @Html.LabelFor(m => m.Miles, "Mileage")
+      @Html.TextBoxFor(m => m.Miles, new { type = "number", min = 0, max = int.MaxValue, step = 1, required = "required" })
     </div>
   </div>
   <div class="inline-actions">

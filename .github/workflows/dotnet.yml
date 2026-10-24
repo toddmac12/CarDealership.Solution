@@ -1,0 +1,22 @@
+name: Build and test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: Generate initial embedded migration for review
+        run: |
+          dotnet tool install --tool-path /tmp/ef dotnet-ef --version 9.0.0
+          /tmp/ef/dotnet-ef migrations add InitialInventory --project CarDealership.csproj
+          python - <<'PY'
+          import pathlib,json,base64
+          for p in pathlib.Path('Migrations').glob('*.cs'):
+              print('GENERATED_SOURCE='+json.dumps({'path':str(p),'content':base64.b64encode(p.read_bytes()).decode()}))
+          PY
+      - run: dotnet test CarDealership.Tests/CarDealership.Tests.csproj --configuration Release

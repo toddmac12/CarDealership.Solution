@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using CarDealership.Models;
-using System.Collections.Generic;
 
 namespace CarDealership.Controllers
 {
-    public class HomeController : Controller
+  public class HomeController : Controller
+  {
+    [HttpGet("/")]
+    public IActionResult Index() => View();
+
+    [Route("/error")]
+    public IActionResult Error()
     {
-
-      [HttpGet("/")]
-      public ActionResult Index()
-      {
-        return View();
-      }
-
+      Response.StatusCode = 500;
+      return Content("Something went wrong. Please try again.");
     }
+  }
 }

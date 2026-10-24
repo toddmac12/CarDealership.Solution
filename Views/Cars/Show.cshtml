@@ -1,24 +1,14 @@
-@using CarDealership.Models;
-
-<section class="hero">
-  <div class="hero-card">
-    <span class="badge">Listing details</span>
-    <h1>@Model.CarModel</h1>
-    <p>Review the full listing, then update pricing or mileage as needed.</p>
-  </div>
-</section>
-
+@model Car
+<section class="hero"><div class="hero-card"><span class="badge">Listing details</span><h1>@Model.CarModel</h1></div></section>
 <div class="detail-card">
   <div class="detail-grid">
-    <div><strong>Price:</strong> $@Model.Price</div>
-    <div><strong>Miles:</strong> @Model.Miles miles</div>
+    <div><strong>Price:</strong> @Model.Price.ToString("C0", CultureInfo.GetCultureInfo("en-US"))</div>
+    <div><strong>Mileage:</strong> @Model.Miles.ToString("N0") miles</div>
     <div><strong>Listing ID:</strong> #@Model.Id</div>
   </div>
   <div class="inline-actions">
     <a class="button button-primary" href="/cars/@Model.Id/edit">Edit listing</a>
-    <form action="/cars/@Model.Id/delete" method="post">
-      <button class="button button-secondary" type="submit">Delete</button>
-    </form>
+    <a class="button button-secondary" href="/cars/@Model.Id/delete">Delete listing</a>
     <a class="button button-secondary" href="/cars">Back to inventory</a>
   </div>
 </div>

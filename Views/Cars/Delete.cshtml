@@ -1,0 +1,9 @@
+@model Car
+<div class="detail-card">
+  <h1>Delete listing?</h1><p>Remove <strong>@Model.CarModel</strong> from inventory? This cannot be undone.</p>
+  <form action="/cars/@Model.Id/delete" method="post">
+    @Html.AntiForgeryToken()
+    <div class="inline-actions"><button class="button button-primary" type="submit">Delete listing</button>
+    <a class="button button-secondary" href="/cars/@Model.Id">Cancel</a></div>
+  </form>
+</div>
