@@ -342,3 +342,14 @@ body {
     flex-wrap: wrap;
   }
 }
+
+.filter-bar { display:flex; flex-wrap:wrap; align-items:end; gap:16px; margin:0 0 24px; }
+.filter-bar .form-field { flex:1 1 160px; }
+.form-field select { width:100%; padding:12px; border-radius:12px; border:1px solid var(--stroke); font:inherit; background:white; }
+.validation-errors { color:#9f241b; margin-bottom:18px; }
+.validation-summary-valid { display:none; }
+.input-validation-error { border-color:#9f241b !important; }
+.notice { padding:16px; background:#e7f3e7; border-radius:12px; }
+.car-card h2 { font-size:1.15rem; margin:0; }
+.car-meta { flex-wrap:wrap; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline:3px solid var(--accent-dark); outline-offset:3px; }

@@ -1,56 +1,42 @@
-@using CarDealership.Models;
-@{
-  int total = Model?.Count ?? 0;
-}
-
+@model InventoryViewModel
 <section class="hero">
   <div class="hero-card">
-    <h1>Inventory</h1>
-    <p>Scan the latest listings, compare mileage, and jump straight into details.</p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="/cars/new">Add a new car</a>
-      <a class="button button-secondary" href="/">Back home</a>
-    </div>
+    <h1>Inventory</h1><p>Compare vehicles by model, price, and mileage.</p>
+    <a class="button button-primary" href="/cars/new">Add a new car</a>
   </div>
-  <div class="stats">
-    <div class="stat">
-      <strong>@total</strong>
-      <span>Total listings</span>
-    </div>
-    <div class="stat">
-      <strong>Fast updates</strong>
-      <span>Edit or remove entries any time.</span>
-    </div>
-  </div>
+  <div class="stats"><div class="stat"><strong>@Model.TotalCount</strong><span>Total listings</span></div>
+  <div class="stat"><strong>@Model.Cars.Count</strong><span>Matching listings</span></div></div>
 </section>
-
-<h2 class="section-title">Available cars</h2>
-@if (total == 0)
+<form class="filter-bar" action="/cars" method="get">
+  <div class="form-field"><label for="Search">Model</label><input id="Search" name="Search" value="@Model.Filter.Search" maxlength="120" /></div>
+  <div class="form-field"><label for="MaxPrice">Maximum price (USD)</label><input id="MaxPrice" name="MaxPrice" value="@Model.Filter.MaxPrice" type="number" min="0" /></div>
+  <div class="form-field"><label for="MaxMiles">Maximum mileage</label><input id="MaxMiles" name="MaxMiles" value="@Model.Filter.MaxMiles" type="number" min="0" /></div>
+  <div class="form-field"><label for="Sort">Sort</label><select id="Sort" name="Sort">
+    <option value="newest" selected="@(Model.Filter.Sort == "newest")">Newest first</option>
+    <option value="model" selected="@(Model.Filter.Sort == "model")">Model A–Z</option>
+    <option value="price" selected="@(Model.Filter.Sort == "price")">Lowest price</option>
+    <option value="price-desc" selected="@(Model.Filter.Sort == "price-desc")">Highest price</option>
+    <option value="miles" selected="@(Model.Filter.Sort == "miles")">Lowest mileage</option>
+  </select></div>
+  <button class="button button-primary" type="submit">Apply filters</button><a href="/cars">Clear</a>
+</form>
+@Html.ValidationSummary(false, "", new { @class = "validation-errors", role = "alert" })
+@if (Model.Cars.Count == 0)
 {
-  <div class="empty-state">
-    <p>No cars available yet. Add a new listing to get started.</p>
-  </div>
+  <div class="empty-state"><p>No matching cars. Clear the filters or add a listing.</p></div>
 }
 else
 {
   <section class="card-grid">
-  @foreach (Car car in Model)
+  @foreach (var car in Model.Cars)
   {
-    <article class="car-card">
-      <div>
-        <span class="badge">#@car.Id</span>
-        <h3>@car.CarModel</h3>
-      </div>
-      <div class="car-meta">
-        <span>$@car.Price</span>
-        <span>@car.Miles miles</span>
-      </div>
+    <article class="car-card" data-listing-id="@car.Id">
+      <span class="badge">#@car.Id</span><h2>@car.CarModel</h2>
+      <div class="car-meta"><span>@car.Price.ToString("C0", CultureInfo.GetCultureInfo("en-US"))</span><span>@car.Miles.ToString("N0") miles</span></div>
       <div class="car-actions">
         <a class="button button-secondary" href="/cars/@car.Id">View</a>
         <a class="button button-secondary" href="/cars/@car.Id/edit">Edit</a>
-        <form action="/cars/@car.Id/delete" method="post">
-          <button class="button button-primary" type="submit">Delete</button>
-        </form>
+        <a class="button button-secondary" href="/cars/@car.Id/delete">Delete</a>
       </div>
     </article>
   }

@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-  </PropertyGroup>
-
+  <PropertyGroup><TargetFramework>net9.0</TargetFramework></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0"><PrivateAssets>all</PrivateAssets><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets></PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="CarDealership.Tests/**/*.cs" />
+    <Content Remove="CarDealership.Tests/**" />
+    <None Remove="CarDealership.Tests/**" />
+  </ItemGroup>
 </Project>
