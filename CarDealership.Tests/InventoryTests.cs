@@ -175,6 +175,35 @@ public class InventoryTests : IDisposable
     Assert.DoesNotContain("data-listing-id=", html);
   }
 
+
+  [Fact]
+  public async Task UpdateUsesRouteIdEvenWhenFormSuppliesAnotherId()
+  {
+    using var factory = Factory();
+    using var client = Client(factory);
+    var result = await Post(client, "/cars/1/edit", "/cars/1", new Dictionary<string,string>
+    { ["Id"]="2", ["CarModel"]="Route One", ["Price"]="100", ["Miles"]="200" });
+    Assert.Equal(HttpStatusCode.Redirect, result.StatusCode);
+    using var scope = factory.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<DealershipContext>();
+    Assert.Equal("Route One", (await db.Cars.FindAsync(1)).CarModel);
+    Assert.Equal("2021 Toyota Camry", (await db.Cars.FindAsync(2)).CarModel);
+  }
+
+  [Fact]
+  public async Task DeleteUsesRouteIdEvenWhenFormSuppliesAnotherId()
+  {
+    using var factory = Factory();
+    using var client = Client(factory);
+    var result = await Post(client, "/cars/1/delete", "/cars/1/delete",
+      new Dictionary<string,string> { ["Id"]="2" });
+    Assert.Equal(HttpStatusCode.Redirect, result.StatusCode);
+    using var scope = factory.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<DealershipContext>();
+    Assert.Null(await db.Cars.FindAsync(1));
+    Assert.NotNull(await db.Cars.FindAsync(2));
+  }
+
   public void Dispose()
   {
     Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();

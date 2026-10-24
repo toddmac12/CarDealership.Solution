@@ -40,7 +40,7 @@ namespace CarDealership.Controllers
       value.Replace("\\", "\\\\").Replace("%", "\\%").Replace("_", "\\_");
 
     [HttpGet("/cars/{id:int}")]
-    public async Task<IActionResult> Show(int id)
+    public async Task<IActionResult> Show([FromRoute] int id)
     {
       var car = await _db.Cars.AsNoTracking().FirstOrDefaultAsync(car => car.Id == id);
       if (car == null) return NotFound();
@@ -70,7 +70,7 @@ namespace CarDealership.Controllers
     }
 
     [HttpGet("/cars/{id:int}/edit")]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit([FromRoute] int id)
     {
       var car = await _db.Cars.AsNoTracking().FirstOrDefaultAsync(car => car.Id == id);
       if (car == null) return NotFound();
@@ -78,7 +78,7 @@ namespace CarDealership.Controllers
     }
 
     [HttpPost("/cars/{id:int}")]
-    public async Task<IActionResult> Update(int id, CarForm form)
+    public async Task<IActionResult> Update([FromRoute] int id, CarForm form)
     {
       var car = await _db.Cars.FindAsync(id);
       if (car == null) return NotFound();
@@ -92,7 +92,7 @@ namespace CarDealership.Controllers
     }
 
     [HttpGet("/cars/{id:int}/delete")]
-    public async Task<IActionResult> ConfirmDelete(int id)
+    public async Task<IActionResult> ConfirmDelete([FromRoute] int id)
     {
       var car = await _db.Cars.AsNoTracking().FirstOrDefaultAsync(car => car.Id == id);
       if (car == null) return NotFound();
@@ -100,7 +100,7 @@ namespace CarDealership.Controllers
     }
 
     [HttpPost("/cars/{id:int}/delete")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
       var car = await _db.Cars.FindAsync(id);
       if (car == null) return NotFound();
