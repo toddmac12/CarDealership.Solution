@@ -48,13 +48,16 @@ public class InventoryTests : IDisposable
       var response = await Post(client, "/cars/1/edit", "/cars/1", new Dictionary<string,string>
       { ["CarModel"]="Updated Subaru", ["Price"]="17000", ["Miles"]="69000" });
       Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+      Assert.Equal(HttpStatusCode.Redirect, (await Post(client, "/cars/12/delete", "/cars/12/delete",
+        new Dictionary<string,string>())).StatusCode);
     }
     using (var factory = Factory())
     using (var client = Client(factory))
     {
       Assert.Contains("Updated Subaru", await client.GetStringAsync("/cars/1"));
       using var scope = factory.Services.CreateScope();
-      Assert.Equal(12, await scope.ServiceProvider.GetRequiredService<DealershipContext>().Cars.CountAsync());
+      Assert.Equal(11, await scope.ServiceProvider.GetRequiredService<DealershipContext>().Cars.CountAsync());
+      Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync("/cars/12")).StatusCode);
     }
   }
 
@@ -108,10 +111,10 @@ public class InventoryTests : IDisposable
   }
 
   [Theory]
-  [InlineData("/cars", "/cars/new")]
-  [InlineData("/cars/1", "/cars/1/edit")]
-  [InlineData("/cars/1/delete", "/cars/1/delete")]
-  public async Task UnsafeRequestsRequireAntiforgeryToken(string action, string unused)
+  [InlineData("/cars")]
+  [InlineData("/cars/1")]
+  [InlineData("/cars/1/delete")]
+  public async Task UnsafeRequestsRequireAntiforgeryToken(string action)
   {
     using var factory = Factory();
     using var client = Client(factory);
